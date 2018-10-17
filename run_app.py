@@ -17,6 +17,8 @@ import time
 import paramiko as pmk
 from rsync.rsync_slave import transition
 
+from log.log import log_init
+
 '''
 检查连接
 '''
@@ -48,6 +50,11 @@ if __name__ == '__main__':
     file = open('collect_ip.json', 'r', encoding='utf-8')
     ci_array = json.load(file)
 
+    # 读取日志文件
+    file_log = open('loggin_conf.json', 'r', encoding='utf-8')
+    ci_array_log = json.load(file_log)
+    log_init(ci_array_log[0]['logging'])
+
     pool = mp.Pool(processes=5)  # 进程池
 
     for item in ci_array:
@@ -67,17 +74,18 @@ if __name__ == '__main__':
             t = pmk.Transport((item.get("ip"), item.get("port")))
             t.connect(username=item.get("account"), password=item.get("pwd"))
             sftp = pmk.SFTPClient.from_transport(t)
-            #方法一
-            p_work = partial(transition, local_base_path, sftp, t)  # 执行函数及传入相关参数
-            pool.map(p_work, remote_base_path)
+            # 方法一
+            p_work = partial(transition, remote_base_path, local_base_path, sftp, t)  # 执行函数及传入相关参数
+            pool.map(p_work, [])
 
-            #方法二
+            # 方法二
             # transition(remote_base_path, local_base_path, sftp, t)
 
             time.sleep(10)
-        finally:
-            pool.terminate()
-            pool.join()
+        except:
+            print('unknow error')
+        pool.terminate()
+        pool.join()
 
         file.close();
 
