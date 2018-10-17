@@ -16,6 +16,7 @@ from functools import partial
 import time
 import paramiko as pmk
 from rsync.rsync_slave import transition
+import traceback
 
 from log.log import log_init
 
@@ -56,6 +57,7 @@ if __name__ == '__main__':
     log_init(ci_array_log[0]['logging'])
 
     pool = mp.Pool(processes=5)  # 进程池
+    p_work = partial(transition, remote_base_path, local_base_path)  # 执行函数及传入相关参数
 
     for item in ci_array:
         print(item.get("mac_name"))
@@ -71,22 +73,22 @@ if __name__ == '__main__':
                 exit(-1)
             # pool.map(p_work, datetime.datetime.now().strftime('%Y-%m-%d'))
 
-            t = pmk.Transport((item.get("ip"), item.get("port")))
-            t.connect(username=item.get("account"), password=item.get("pwd"))
-            sftp = pmk.SFTPClient.from_transport(t)
+            # t = pmk.Transport((item.get("ip"), item.get("port")))
+            # t.connect(username=item.get("account"), password=item.get("pwd"))
+            # sftp = pmk.SFTPClient.from_transport(t)
             # 方法一
-            p_work = partial(transition, remote_base_path, local_base_path, sftp, t)  # 执行函数及传入相关参数
-            pool.map(p_work, [])
+            # p_work = partial(transition, remote_base_path, local_base_path, sftp, t)  # 执行函数及传入相关参数
+            pool.map(p_work, (item, ))
 
             # 方法二
             # transition(remote_base_path, local_base_path, sftp, t)
 
             time.sleep(10)
         except:
-            print('unknow error')
-        pool.terminate()
-        pool.join()
+            print("unknow exception: ", traceback.format_exc())
+    pool.terminate()
+    pool.join()
 
-        file.close();
+    file.close();
 
     print('---------------end  perform application---------------------')

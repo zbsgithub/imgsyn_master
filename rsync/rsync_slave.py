@@ -54,7 +54,11 @@ def sync_file(file_absoult_array, sftp, local_base_path, remote_base_path, t):
 
 # remote_base_path "/data/snapshots/"
 # local_base_path 本地存放路径 "/data/snapshots_v1/"
-def transition(remote_base_path, local_base_path, sftp, t):
+def transition(remote_base_path, local_base_path, args):
+    t = pmk.Transport((args[0], args[1]))
+    t.connect(username=args[2], password=args[3])
+    sftp = pmk.SFTPClient.from_transport(t)
+
     # current_date = datetime.datetime.now().strftime('%Y-%m-%d')  # 当前日期
     current_date = '2018-10-14'
     # 测试代码 路径： /data/snapshots/2018-10-14/00163E001D8F/
