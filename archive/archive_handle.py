@@ -178,7 +178,6 @@ class ArchiveHandler(object):
         self.preprocess()
         self.archive()
         # self.compress()
-        self.active_statistic()
 
     def init(self):
         for pack_machine in self._pack_machines:
@@ -439,18 +438,6 @@ class ArchiveHandler(object):
                     if not buf:
                         break
                     fdst.write(buf)
-
-    def active_statistic(self):
-        active_count = SnapshotPackDistribution.objects(update_time=self._target_time).count()
-        active_item = SnapshotActiveDeviceStatistic.objects(datetime=self._target_time).first()
-        if not active_item:
-            active_item = SnapshotActiveDeviceStatistic(
-                self._target_day,
-                active_count
-            )
-        else:
-            active_item.count = active_count
-        active_item.save()
 
     def _choose_pack_machine(self, device_id):
         partition = self._partitions.get(device_id)
