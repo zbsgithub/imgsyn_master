@@ -122,7 +122,7 @@ class ArchiveTable(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         if self._current_handle_index >= len(self._archive_list):
             raise StopIteration
         path_obj = self._archive_list[self._current_handle_index]
@@ -155,7 +155,8 @@ class ArchiveHandler(object):
         self._partitions = {}
         self._archive_table = ArchiveTable()
 
-        self._target_day = datetime.datetime.now().date() - datetime.timedelta(days=1)
+        # self._target_day = datetime.datetime.now().date() - datetime.timedelta(days=1)
+        self._target_day = datetime.datetime.now().date() - datetime.timedelta(days=9)
         self._target_time = datetime.datetime(
             self._target_day.year,
             self._target_day.month,
@@ -258,7 +259,7 @@ class ArchiveHandler(object):
             except:
                 continue
             fd.write(line)
-        for index, fd in fds.iteritems():
+        for index, fd in fds.items():
             fd.close()
 
     @classmethod
@@ -476,8 +477,7 @@ class ArchiveHandler(object):
 
     def _get_all_metainfo_files(self):
         files = []
-        # base_path = os.path.join(self._source_path, self._target_day_str)
-        base_path = os.path.join(self._source_path, '2018-10-14')#临时改为指定日期
+        base_path = os.path.join(self._source_path, self._target_day_str)
         for path_name in os.listdir(base_path):
             if len(path_name) != len(get_mac_address()):
                 continue

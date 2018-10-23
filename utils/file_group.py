@@ -38,7 +38,7 @@ class FileGroup(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         if not self._file_objects:
             raise StopIteration
         result = self._get_oldest_line()
