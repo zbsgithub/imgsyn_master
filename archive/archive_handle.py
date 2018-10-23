@@ -230,12 +230,13 @@ class ArchiveHandler(object):
             pass
 
         for index in range(0, piece_count):#python3 取消了xrange
+
             abs_filename = os.path.join(self._tmp_path, "%s" % index)
+            print(abs_filename)
             fds[index] = open(abs_filename, "wb")
 
         for line in file_group:
-            print
-            line
+            print(line)
             try:
                 width, height, timestamp, device_model, device_id, ip_address, \
                 gzid, oem_name, device_num, device_name, fid, category, create_datetime, save_path, uid = line
@@ -282,7 +283,9 @@ class ArchiveHandler(object):
             abs_filename = os.path.join(self._tmp_path, filename)
             if not os.path.isfile(abs_filename):
                 continue
+            print('--------------------开始调用_archive方法--------------')
             self._archive(abs_filename)
+            print('--------------------结束调用_archive方法--------------')
             self._compress()
 
     def _archive(self, filename):
@@ -294,6 +297,7 @@ class ArchiveHandler(object):
         except:
             return
         for line in fd:
+            print(line)
             line = line.strip()
             self._handled_count += 1
             if self._handled_count % 5000 == 0:
