@@ -510,7 +510,7 @@ if __name__ == '__main__':
 
     #########################################################################################
     # 读取日志文件
-    file_log = open('loggin_conf.json', 'r', encoding='utf-8')
+    file_log = open('../loggin_conf.json', 'r', encoding='utf-8')
     ci_array_log = json.load(file_log)
     # log_init(ci_array_log[0]['logging'])
     log_init(ci_array_log[0]['logging'])

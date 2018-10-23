@@ -1,5 +1,5 @@
-[{
-  "logging" : {
+{
+  "logging": {
     "path": "./log",
     "file": "up.log",
     "format": "%(asctime)s %(filename)s[line:%(lineno)d][%(levelname)s]->%(message)s",
@@ -8,10 +8,11 @@
     "level": 10
   },
   "source_path": "/data/snapshots_v1/",
-    "snapshot_subdir": "snapshots",
-    "dst_path": "/data/snapshot_archives_v1/",
-    "pack_machines": [
-        "00163E001D8F",
-        "00163E007D64"
-    ]
-}]
+  "snapshot_subdir": "snapshots",
+  "dst_path": "/data/snapshot_archives_v1/",
+  "pack_machines": [
+    "00163E001D8F",
+    "00163E007D64"
+  ],
+  "filename_suffix": "metainfo.txt"
+}
