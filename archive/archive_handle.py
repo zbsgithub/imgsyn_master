@@ -232,7 +232,6 @@ class ArchiveHandler(object):
         for index in range(0, piece_count):#python3 取消了xrange
 
             abs_filename = os.path.join(self._tmp_path, "%s" % index)
-            print(abs_filename)
             fds[index] = open(abs_filename, "wb")
 
         for line in file_group:
@@ -283,12 +282,11 @@ class ArchiveHandler(object):
             abs_filename = os.path.join(self._tmp_path, filename)
             if not os.path.isfile(abs_filename):
                 continue
-            print('--------------------开始调用_archive方法--------------')
             self._archive(abs_filename)
-            print('--------------------结束调用_archive方法--------------')
             self._compress()
 
     def _archive(self, filename):
+        print(filename)
         logging.info("[ArchiveHandler::_archive][filename: %s]" % filename)
         # handled_count = 0
         self._archive_table.clear()

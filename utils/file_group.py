@@ -20,12 +20,14 @@ class FileGroup(object):
         for filename in self._files:
             try:
                 fd = open(filename, "rb")
+                print(os.path.split(filename)[0])
                 item = {
                     "filepath": os.path.split(filename)[0],
                     "filename": filename,
                     "fd": fd,
                 }
                 record = self._get_record(fd)
+                print(record)
                 if not record:
                     fd.close()
                     continue
