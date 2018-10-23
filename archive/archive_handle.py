@@ -17,6 +17,7 @@ import contextlib
 from contextlib import contextmanager
 import time
 from log.log import log_init
+from collections import Iterable
 # import sys;
 #
 # sys.path.append('archive/date_time_utils');
@@ -233,9 +234,13 @@ class ArchiveHandler(object):
 
             abs_filename = os.path.join(self._tmp_path, "%s" % index)
             fds[index] = open(abs_filename, "wb")
-
+        print(file_group)
+        print(isinstance(file_group, Iterable))
         for line in file_group:
+            logging.info("进入迭代器方法：%s" % line)
+            print('------------------begin---------------------')
             print(line)
+            print('------------------end---------------------')
             try:
                 width, height, timestamp, device_model, device_id, ip_address, \
                 gzid, oem_name, device_num, device_name, fid, category, create_datetime, save_path, uid = line
@@ -253,6 +258,7 @@ class ArchiveHandler(object):
             snapshot_abs_filename = os.path.join(file_group.last_readed_path(),
                                                  self._snapshot_subdir, "%s.jpg" % uid)
             line.append(snapshot_abs_filename)
+            logging.info("快照图片名称：%s" % snapshot_abs_filename)
             try:
                 line = ",".join(line) + os.linesep
             except:
@@ -286,7 +292,6 @@ class ArchiveHandler(object):
             self._compress()
 
     def _archive(self, filename):
-        print(filename)
         logging.info("[ArchiveHandler::_archive][filename: %s]" % filename)
         # handled_count = 0
         self._archive_table.clear()
