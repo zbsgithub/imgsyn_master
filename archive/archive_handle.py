@@ -476,7 +476,8 @@ class ArchiveHandler(object):
 
     def _get_all_metainfo_files(self):
         files = []
-        base_path = os.path.join(self._source_path, self._target_day_str)
+        # base_path = os.path.join(self._source_path, self._target_day_str)
+        base_path = os.path.join(self._source_path, '2018-10-14')#临时改为指定日期
         for path_name in os.listdir(base_path):
             if len(path_name) != len(get_mac_address()):
                 continue
@@ -513,7 +514,7 @@ if __name__ == '__main__':
     file_log = open('../loggin_conf.json', 'r', encoding='utf-8')
     ci_array_log = json.load(file_log)
     # log_init(ci_array_log[0]['logging'])
-    log_init(ci_array_log[0]['logging'])
+    log_init(ci_array_log['logging'])
 
     logging.info("[main][start...]")
     archive_handler = ArchiveHandler(
