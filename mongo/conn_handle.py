@@ -34,6 +34,10 @@ def conn(method, json_obj):
                 obj = test_collect.insert_one(json_obj)  # 插入数据
                 print(obj.inserted_id)
                 return obj
+            elif method == "update":
+                # test_collect.update_one({"did",json_obj.did},{$set:{'mac':json_obj.get("mac"),"update_time":json_obj.update_time})
+                test_collect.update_one({"did",json_obj.did},{'mac':json_obj.get("mac"),"update_time":json_obj.update_time})
+
             elif method == "query":
                 result = test_collect.find_one(json_obj)  # 查询单条数据
                 return result  # 创建集合test_collect

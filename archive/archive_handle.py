@@ -41,6 +41,7 @@ from mongoengine import connect as connect_to_mongodb
 from utils.net import get_mac_address
 from utils.file_group import FileGroup
 import utils.iplocation as iplocation
+from mongo.conn_handle import conn
 
 import utils.log as log
 
@@ -92,10 +93,14 @@ def sort_date_list(date_list, date_format, DESC=False):
 
 class SnapshotPackDistribution(Document):
     meta = {"collection": "snapshot_pack_distributions"}
-    device_id = StringField(max_length=64)
-    partition_id = StringField(max_length=64)
-    update_time = DateTimeField()
+    # device_id = StringField(max_length=64)
+    # partition_id = StringField(max_length=64)
+    # update_time = DateTimeField()
 
+    did = StringField(max_length=64)
+    mac = StringField(max_length=64)
+    create_time = DateTimeField()
+    update_time = DateTimeField()
 
 class SnapshotFile(object):
     def __init__(self, abs_file_name, meta):
@@ -236,10 +241,7 @@ class ArchiveHandler(object):
         print(file_group)
         print(isinstance(file_group, Iterable))
         for line in file_group:
-            logging.info("进入迭代器方法：%s" % line)
-            print('------------------begin---------------------')
-            print(line)
-            print('------------------end---------------------')
+            # logging.info("进入迭代器方法：%s" % line)
             try:
                 width, height, timestamp, device_model, device_id, ip_address, \
                 gzid, oem_name, device_num, device_name, fid, category, create_datetime, save_path, uid = line
@@ -257,7 +259,7 @@ class ArchiveHandler(object):
             snapshot_abs_filename = os.path.join(file_group.last_readed_path(),
                                                  self._snapshot_subdir, "%s.jpg" % uid)
             line.append(snapshot_abs_filename)
-            logging.info("快照图片名称：%s" % snapshot_abs_filename)
+            # logging.info("快照图片名称：%s" % snapshot_abs_filename)
             try:
                 line = ",".join(line) + os.linesep
             except:
@@ -300,6 +302,7 @@ class ArchiveHandler(object):
             return
         for line in fd:
             print(line)
+            line = str(line, encoding="utf-8")
             line = line.strip()
             self._handled_count += 1
             if self._handled_count % 5000 == 0:
@@ -448,19 +451,24 @@ class ArchiveHandler(object):
     def _choose_pack_machine(self, device_id):
         partition = self._partitions.get(device_id)
         if not partition:
-            partition_obj = SnapshotPackDistribution.objects(device_id=device_id).first()
+
+            # partition_obj = SnapshotPackDistribution.objects(device_id=device_id).first()
+            partition_obj = conn("query", {"did": device_id})
             if not partition_obj:
                 partition = random.choice(self._pack_machines)
                 partition_obj = SnapshotPackDistribution(
-                    device_id=device_id,
-                    partition_id=partition,
+                    did=device_id,
+                    mac=partition,
+                    create_time=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     update_time=self._target_time
                 )
+                partition_obj = conn("insert", partition_obj)
             else:
                 # partition_obj.update_time = datetime.datetime.now()
                 partition_obj.update_time = self._target_time
-                partition = partition_obj.partition_id
-            partition_obj.save()
+                partition_obj.mac = partition_obj.mac
+            # partition_obj.save()
+                partition_obj = conn("update", partition_obj)
             self._partitions[device_id] = partition
         return partition
 
@@ -521,3 +529,4 @@ if __name__ == '__main__':
         archive_handler.run()
     except:
         logging.error("[main][handle fail][exceptions: %s]" % traceback.format_exc())
+    logging.info("--------------------------------------主程序结束---------------------------------------------]")
