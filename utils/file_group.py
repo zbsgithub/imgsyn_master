@@ -4,6 +4,9 @@
 import os
 import datetime
 import logging
+import traceback
+from functools import cmp_to_key
+from operator import lt
 
 
 class FileGroup(object):
@@ -32,14 +35,15 @@ class FileGroup(object):
                 item["line"] = record
                 self._file_objects.append(item)
             except:
-                logging.error("[FileGroup::_open_all][open %s fail]" % filename)
                 continue
+        logging.info("[FileGroup::__open_all][objects size: %d]" % len(self._file_objects))
 
     def __iter__(self):
         return self
 
     def __next__(self):
         if not self._file_objects:
+            logging.info("[FileGroup::__next__] stop inter")
             raise StopIteration
         result = self._get_oldest_line()
 
@@ -64,7 +68,8 @@ class FileGroup(object):
         return self._last_read_path
 
     def _get_oldest_line(self):
-        self._file_objects.sort(lambda x, y: cmp(x["line"][self._datetime_pos], y["line"][self._datetime_pos]))
+        self._file_objects.sort(
+            key=cmp_to_key(lambda x, y: lt(x["line"][self._datetime_pos], y["line"][self._datetime_pos])))
         self._last_read_path = self._file_objects[0]["filepath"]
         return self._file_objects[0]["line"]
 
@@ -72,12 +77,17 @@ class FileGroup(object):
         while True:
             try:
                 line = fd.readline()
+                line = str(line, encoding='utf-8')
                 if not line:
+                    logging.info("[FileGroup::_get_record][read line not line: %s]" % line)
                     return None
+
                 line = line.strip()
                 line = line.split(self._separator)
                 line[self._datetime_pos] = datetime.datetime.strptime(line[self._datetime_pos], self._datetime_format)
+                logging.info("[FileGroup::_get_record][return line: %s]" % line)
                 return line
             except:
+                logging.info("[FileGroup::_get_record][exception: %s]" % traceback.format_exc())
                 continue
         return None

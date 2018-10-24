@@ -44,7 +44,6 @@ import utils.iplocation as iplocation
 
 import utils.log as log
 
-
 '''
 某个路径下所有的子文件列表(绝对路径)
 '''
@@ -230,7 +229,7 @@ class ArchiveHandler(object):
         except:
             pass
 
-        for index in range(0, piece_count):#python3 取消了xrange
+        for index in range(0, piece_count):  # python3 取消了xrange
 
             abs_filename = os.path.join(self._tmp_path, "%s" % index)
             fds[index] = open(abs_filename, "wb")
@@ -263,7 +262,7 @@ class ArchiveHandler(object):
                 line = ",".join(line) + os.linesep
             except:
                 continue
-            fd.write(line)
+            fd.write(bytes(line, encoding='utf-8'))
         for index, fd in fds.items():
             fd.close()
 
