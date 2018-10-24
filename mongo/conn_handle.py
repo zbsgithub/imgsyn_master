@@ -35,9 +35,10 @@ def conn(method, json_obj):
                 print(obj.inserted_id)
                 return obj
             elif method == "update":
-                # test_collect.update_one({"did",json_obj.did},{$set:{'mac':json_obj.get("mac"),"update_time":json_obj.update_time})
-                test_collect.update_one({"did",json_obj.did},{'mac':json_obj.get("mac"),"update_time":json_obj.update_time})
-
+                obj = test_collect.update_one({"did": json_obj.get("did")},
+                                              {"$set": {'mac': json_obj.get("mac"),
+                                                        "update_time": json_obj.get("update_time")}})
+                return obj
             elif method == "query":
                 result = test_collect.find_one(json_obj)  # 查询单条数据
                 return result  # 创建集合test_collect
@@ -74,6 +75,11 @@ if __name__ == '__main__':
     # conn("insert", {"did": "fca386940c00", "mac": "00163E007D64",
     #                 "create_time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
     #                 "update_time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
-    obj = conn("query", {"did": "fca386940c00"})
-    print(obj)
+    obj = conn("query", {"did": "60427f60d19f"})
+    print(obj["mac"])
+
+    # json_obj = {"did": "fca386940c00", 'mac': 'zbs_test',
+    #             "update_time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')};
+    # update_count = conn('update', json_obj)
+    # print(update_count)
     print('-----------end shell --------------------')

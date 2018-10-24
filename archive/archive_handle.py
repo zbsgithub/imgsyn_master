@@ -102,6 +102,7 @@ class SnapshotPackDistribution(Document):
     create_time = DateTimeField()
     update_time = DateTimeField()
 
+
 class SnapshotFile(object):
     def __init__(self, abs_file_name, meta):
         self.abs_file_name = abs_file_name
@@ -182,7 +183,7 @@ class ArchiveHandler(object):
         self.init()
         self.preprocess()
         self.archive()
-        # self.compress()
+        self.compress()
 
     def init(self):
         for pack_machine in self._pack_machines:
@@ -301,7 +302,7 @@ class ArchiveHandler(object):
         except:
             return
         for line in fd:
-            print(line)
+            # print(line)
             line = str(line, encoding="utf-8")
             line = line.strip()
             self._handled_count += 1
@@ -323,8 +324,7 @@ class ArchiveHandler(object):
                 logging.info("[ArchiveHandler::archive][parse line fail][exception: %s][line: %s]" %
                              (traceback.format_exc(), line))
                 continue
-            logging.info("[ArchiveHandler::archive][parse line fail][exception: %s][line: %s]" %
-                         (ip_address, line))
+            #logging.info("[ArchiveHandler::archive][parse line fail][exception: %s][line: %s]" % (ip_address, line)) 暂时注释掉
             locale_number = iplocation.get_locale_number(ip_address)
             pack_machine = self._choose_pack_machine(device_id)
             # sub_path = "%s-%s-%s" % (device_id, locale_number, self._target_day_str)
@@ -367,8 +367,10 @@ class ArchiveHandler(object):
         fd.close()
         logging.info("[ArchiveHandler::_archive][handled_count: %s]" % self._handled_count)
         logging.info("[ArchiveHandler::_archive][over...]")
-
+        print('archive_table_方法----------------------------------------')
+        print(self._archive_table)
     def _compress(self):
+        print('进入到压缩的方法')
         logging.info("[ArchiveHandler::_compress][archives count: %s]" % len(self._archive_table))
         compress_count = 0
 
@@ -377,7 +379,7 @@ class ArchiveHandler(object):
             if compress_count % 5000 == 0:
                 logging.info("[ArchiveHandler::_compress][compress_count: %s]" % compress_count)
             machine_id, path_id, snapshot_files = path_obj
-            # logging.info("[ArchiveHandler::_compress][machine_id: %s][path_id: %s]" % (machine_id, path_id))
+            logging.info("[ArchiveHandler::_compress][machine_id: %s][path_id: %s]" % (machine_id, path_id))
             try:
                 target_path_obj = self._target_paths[machine_id]
             except:
@@ -401,15 +403,19 @@ class ArchiveHandler(object):
             list_file_descriptor = None
             try:
                 list_file_descriptor = open(list_file_name, "wb")
-                meta_writer = csv.writer(list_file_descriptor, dialect="excel-tab")
+                meta_writer = csv.writer(list_file_descriptor, dialect="excel-tab")#设定写入模式
             except:
                 if list_file_descriptor:
                     list_file_descriptor.close()
+                print('程序准备写入异常关闭了')
                 continue
 
             count = 1
             for snapshot_file in snapshot_files:
                 meta = snapshot_file.meta
+                print('-------------------begin meta------------------')
+                print(meta)
+                print('-------------------end meta------------------')
                 # no need copy image
                 # old_filename = snapshot_file.abs_file_name
                 # new_filename = os.path.join(archive_abs_path, "%s_%s.jpg" % (count, meta[0]))
@@ -422,6 +428,7 @@ class ArchiveHandler(object):
                 try:
                     meta_writer.writerow(meta)
                 except:
+                    print('----------------------写入list.csv文件出错了-------------------')
                     continue
                 count += 1
             list_file_descriptor.close()
@@ -439,7 +446,7 @@ class ArchiveHandler(object):
 
         logging.info("[ArchiveHandler::_compress][compress_count: %s]" % compress_count)
 
-    def _copyfile(self, src, dst, length=16 * 1024):
+    def _copyfile(self, src, dst, length=16 * 1024):#暂时没用到
         with open(src, 'rb') as fsrc:
             with open(dst, 'wb') as fdst:
                 while 1:
@@ -450,27 +457,27 @@ class ArchiveHandler(object):
 
     def _choose_pack_machine(self, device_id):
         partition = self._partitions.get(device_id)
+        mac = '123456'
         if not partition:
+            partition_obj = conn("query", {"did": device_id})  # 当前分区对象
+            if not partition_obj:  # 为空则随机一个并插入数据库
+                #随机产生mac
+                file_log = open('../loggin_conf.json', 'r', encoding='utf-8')
+                ci_array_log = json.load(file_log)
 
-            # partition_obj = SnapshotPackDistribution.objects(device_id=device_id).first()
-            partition_obj = conn("query", {"did": device_id})
-            if not partition_obj:
-                partition = random.choice(self._pack_machines)
-                partition_obj = SnapshotPackDistribution(
-                    did=device_id,
-                    mac=partition,
-                    create_time=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                    update_time=self._target_time
-                )
-                partition_obj = conn("insert", partition_obj)
-            else:
-                # partition_obj.update_time = datetime.datetime.now()
-                partition_obj.update_time = self._target_time
-                partition_obj.mac = partition_obj.mac
-            # partition_obj.save()
-                partition_obj = conn("update", partition_obj)
+                partition = random.choice(ci_array_log['pack_machines'])
+                insert_json_obj = {"did": device_id, "mac": partition,
+                                   "create_time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                   "update_time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+                conn("insert", insert_json_obj)
+                mac = partition
+            else:  # 若存在，则直接取mac值
+
+                update_json_obj = {"did": device_id, "update_time": self._target_time,"mac":partition_obj["mac"]}
+                get_back_obj = conn("update", update_json_obj)
+                mac = partition_obj["mac"]
             self._partitions[device_id] = partition
-        return partition
+            return mac
 
     def _close_all(self):
         for key, value in self._archives.iteritems():
