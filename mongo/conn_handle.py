@@ -22,9 +22,9 @@ def conn(method, json_obj):
     dblist = db_client.list_database_names()
 
     if "test_mongo" in dblist:  # 判断是否存在数据库test_mongo
-    # print('exist')
+        pass
     else:
-        # print('not exist')
+        pass
         db_test_mongo = db_client["db_test_mongo"]  # create database testmongo
         collect_list = db_test_mongo.list_collection_names()  # all collect list
         if "test_collect" in collect_list:  # 查看集合是否存在
