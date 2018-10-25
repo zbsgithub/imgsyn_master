@@ -54,7 +54,7 @@ if __name__ == '__main__':
     # 读取日志文件
     file_log = open('loggin_conf.json', 'r', encoding='utf-8')
     ci_array_log = json.load(file_log)
-    log_init(ci_array_log[0]['logging'])
+    log_init(ci_array_log['logging'])
 
     pool = mp.Pool(processes=5)  # 进程池
     p_work = partial(transition, remote_base_path, local_base_path)  # 执行函数及传入相关参数

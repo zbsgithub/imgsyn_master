@@ -30,7 +30,7 @@ def sync_file(file_absoult_array, sftp, local_base_path, remote_base_path, t):
         # print(local_path)
         # sftp.get(remote_base_path + file_sub, local_path)
 
-        # 如果远程服务器没目标目录则创建
+        # 如果当前程序所在服务器没目标目录则创建
         if not os.path.exists(local_base_path + file_sub.split("/")[0]+"/"+file_sub.split("/")[1]+"/"):
             os.makedirs(local_base_path + file_sub.split("/")[0]+"/"+file_sub.split("/")[1]+"/")
         #以下为正确代码
@@ -45,8 +45,9 @@ def sync_file(file_absoult_array, sftp, local_base_path, remote_base_path, t):
             sys.exit(1)
         finally:
             # t.close()
-            print('出现未知情况')
-
+            print('transport')
+    t.close()
+    print('----------------文件同步到本地结束---------------------')
 '''
 过渡方法
 '''
@@ -59,7 +60,8 @@ def transition(remote_base_path, local_base_path, args):
     t.connect(username=args["account"], password=args["pwd"])
     sftp = pmk.SFTPClient.from_transport(t)
 
-    current_date = datetime.datetime.now().strftime('%Y-%m-%d')  # 当前日期
+    yesterday_day = datetime.datetime.now().date() - datetime.timedelta(days=1)
+    current_date = yesterday_day.strftime('%Y-%m-%d')  # 当前日期
     # current_date = '2018-10-14'
     # 测试代码 路径： /data/snapshots/2018-10-14/00163E001D8F/
     files = sftp.listdir(remote_base_path + current_date + "/")  # 这里需要注意，列出远程文件必须使用sftp，而不能用os
