@@ -490,7 +490,8 @@ class ArchiveHandler(object):
 '''
 调用执行的方法
 '''
-def execute_handle(self):
+def execute_handle(str):
+    logging.info("--------------------------------------开始调用归档方法---------------------------------------------] %s" % str)
     # 读取日志文件
     file_log = open('../loggin_conf.json', 'r', encoding='utf-8')
     ci_array_log = json.load(file_log)

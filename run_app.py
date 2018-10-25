@@ -89,8 +89,7 @@ if __name__ == '__main__':
     pool.terminate()
     pool.join()
 
-    file.close();
-    print('---------------------------文件开始归档----------------------')
-    execute_handle()
-    print('----------------------------文件结束归档-------------------------')
+    file.close()
+
+    execute_handle('excute')
     print('---------------end  perform application---------------------')
