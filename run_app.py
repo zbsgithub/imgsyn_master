@@ -70,7 +70,7 @@ if __name__ == '__main__':
                 logging.error('SSH connect faild!')
                 exit(-1)
             pool.map(p_work, (item, ))
-            time.sleep(10)
+            #time.sleep(10)
         except:
             logging.error("unknow exception: ", traceback.format_exc())
     pool.terminate()
