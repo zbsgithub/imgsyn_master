@@ -1,14 +1,28 @@
 [
+//  {
+//    "mac_name": "slave01",
+//    "ip": "47.94.35.234",
+//    "account": "root",
+//    "pwd": "Gzdatun1161n",
+//    "port": 22
+//  },
+//  {
+//    "mac_name": "slave02",
+//    "ip": "47.93.182.210",
+//    "account": "root",
+//    "pwd": "Gzdatun1161n",
+//    "port": 22
+//  }
   {
     "mac_name": "slave01",
-    "ip": "47.94.35.234",
+    "ip": "10.170.233.165",
     "account": "root",
     "pwd": "Gzdatun1161n",
     "port": 22
   },
-  {
+    {
     "mac_name": "slave02",
-    "ip": "47.93.182.210",
+    "ip": "10.44.14.101",
     "account": "root",
     "pwd": "Gzdatun1161n",
     "port": 22

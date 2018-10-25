@@ -59,8 +59,8 @@ def transition(remote_base_path, local_base_path, args):
     t.connect(username=args["account"], password=args["pwd"])
     sftp = pmk.SFTPClient.from_transport(t)
 
-    # current_date = datetime.datetime.now().strftime('%Y-%m-%d')  # 当前日期
-    current_date = '2018-10-14'
+    current_date = datetime.datetime.now().strftime('%Y-%m-%d')  # 当前日期
+    # current_date = '2018-10-14'
     # 测试代码 路径： /data/snapshots/2018-10-14/00163E001D8F/
     files = sftp.listdir(remote_base_path + current_date + "/")  # 这里需要注意，列出远程文件必须使用sftp，而不能用os
     file_list_array = []
