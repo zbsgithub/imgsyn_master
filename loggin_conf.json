@@ -7,9 +7,9 @@
     "count": 10,
     "level": 10
   },
-  "source_path": "/data/snapshots_v1/",
+  "source_path": "/data/snapshots/",
   "snapshot_subdir": "snapshots",
-  "dst_path": "/data/snapshot_archives_v1/",
+  "dst_path": "/data/snapshot_archives/",
   "pack_machines": [
     "00163E001D8F",
     "00163E007D64"
