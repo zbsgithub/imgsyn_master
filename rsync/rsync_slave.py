@@ -86,5 +86,3 @@ def transition(remote_base_path, local_base_path, args):
     # print('最终要的路径：' + file_list_array_second)  # 所有要同步的文件的绝对路径
 
     sync_file(file_list_array_second, sftp, local_base_path, remote_base_path, t)
-
-    print('--------------------------程序执行完成------------------------------')

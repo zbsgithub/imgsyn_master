@@ -49,7 +49,7 @@ import utils.log as log
 某个路径下所有的子文件列表(绝对路径)
 '''
 
-
+#个人测试，暂时没用到
 def show_all_son_file():
     # base_path="/data/snapshots_v1/"+datetime.datetime.now().strftime('%Y-%m-%d')
     base_path = "/data/snapshots_v1/2018-10-14"
@@ -161,7 +161,6 @@ class ArchiveHandler(object):
         self._partitions = {}
         self._archive_table = ArchiveTable()
 
-        # self._target_day = datetime.datetime.now().date() - datetime.timedelta(days=1)
         self._target_day = datetime.datetime.now().date() - datetime.timedelta(days=1)
         self._target_time = datetime.datetime(
             self._target_day.year,
@@ -367,16 +366,12 @@ class ArchiveHandler(object):
         fd.close()
         logging.info("[ArchiveHandler::_archive][handled_count: %s]" % self._handled_count)
         logging.info("[ArchiveHandler::_archive][over...]")
-        print('archive_table_方法----------------------------------------')
-        print(self._archive_table)
 
     def _compress(self):
-        print('进入到压缩的方法')
         logging.info("[ArchiveHandler::_compress][archives count: %s]" % len(self._archive_table))
         compress_count = 0
 
         for path_obj in self._archive_table:
-            # print(path_obj)
             compress_count += 1
             if compress_count % 5000 == 0:
                 logging.info("[ArchiveHandler::_compress][compress_count: %s]" % compress_count)
@@ -412,32 +407,18 @@ class ArchiveHandler(object):
             except:
                 if list_file_descriptor:
                     list_file_descriptor.close()
-                # print('程序准备写入异常关闭了')
                 logging.error('写入出错了：%s' % traceback.format_exc())
                 continue
 
             count = 1
             for snapshot_file in snapshot_files:
                 meta = snapshot_file.meta
-                # print('-------------------begin meta------------------')
-                # print(meta)
-                # print('-------------------end meta------------------')
-                # no need copy image
-                # old_filename = snapshot_file.abs_file_name
-                # new_filename = os.path.join(archive_abs_path, "%s_%s.jpg" % (count, meta[0]))
-                # try:
-                #     #shutil.copyfile(old_filename, new_filename)
-                #     self._copyfile(old_filename, new_filename)
-                # except:
-                #     logging.error("[ArchiveHandler::_compress][copyfile fail][%s][%s]" % (old_filename, new_filename))
-                #     continue
                 try:
                     # meta_writer.writerow(b"%s" % bytes(meta, encoding="utf-8"))
                     # meta_writer.writerow([bytes(item, encoding="utf-8") for item in meta])
                     meta_writer.writerow(meta)
                 except:
-                    print('----------------------写入list.csv文件出错了-------------------')
-                    logging.error('写入出错了：%s' % traceback.format_exc())
+                    logging.error('写入list.csv出错了：%s' % traceback.format_exc())
                     continue
                 count += 1
             list_file_descriptor.close()
@@ -506,8 +487,28 @@ class ArchiveHandler(object):
                 if file_name.endswith(self._filename_suffix):
                     files.append(os.path.join(full_path, file_name))
         return files
+'''
+调用执行的方法
+'''
+def execute_handle(self):
+    # 读取日志文件
+    file_log = open('../loggin_conf.json', 'r', encoding='utf-8')
+    ci_array_log = json.load(file_log)
+    log_init(ci_array_log['logging'])
 
-
+    logging.info("[main][start...]")
+    archive_handler = ArchiveHandler(
+        ci_array_log["source_path"],
+        ci_array_log["snapshot_subdir"],
+        ci_array_log["dst_path"],
+        ci_array_log["pack_machines"],
+        ci_array_log["filename_suffix"]
+    )
+    try:
+        archive_handler.run()
+    except:
+        logging.error("[main][handle fail][exceptions: %s]" % traceback.format_exc())
+    logging.info("--------------------------------------归档程序执行完成---------------------------------------------]")
 '''
 运行方法
 '''

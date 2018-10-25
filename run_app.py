@@ -19,7 +19,7 @@ from rsync.rsync_slave import transition
 import traceback
 
 from log.log import log_init
-
+from archive.archive_handle import execute_handle
 '''
 检查连接
 '''
@@ -90,5 +90,7 @@ if __name__ == '__main__':
     pool.join()
 
     file.close();
-
+    print('---------------------------文件开始归档----------------------')
+    execute_handle()
+    print('----------------------------文件结束归档-------------------------')
     print('---------------end  perform application---------------------')
