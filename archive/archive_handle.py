@@ -453,7 +453,7 @@ class ArchiveHandler(object):
             partition_obj = conn("query", {"did": device_id})  # 当前分区对象
             if not partition_obj:  # 为空则随机一个并插入数据库
                 # 随机产生mac
-                file_log = open('../loggin_conf.json', 'r', encoding='utf-8')
+                file_log = open('loggin_conf.json', 'r', encoding='utf-8')
                 ci_array_log = json.load(file_log)
 
                 random_partition = random.choice(ci_array_log['pack_machines'])#随机分配一个mac
@@ -493,7 +493,7 @@ class ArchiveHandler(object):
 def execute_handle(str):
     logging.info("--------------------------------------开始调用归档方法---------------------------------------------] %s" % str)
     # 读取日志文件
-    file_log = open('../loggin_conf.json', 'r', encoding='utf-8')
+    file_log = open('loggin_conf.json', 'r', encoding='utf-8')
     ci_array_log = json.load(file_log)
     log_init(ci_array_log['logging'])
 
@@ -513,7 +513,7 @@ def execute_handle(str):
 '''
 运行方法
 '''
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # print(show_all_son_file()) #所有文件集合(绝对路径)
 
     # 以下方法到每次读取多个文件的第一行，并按照时间排序
@@ -533,21 +533,20 @@ if __name__ == '__main__':
 
     #########################################################################################
     # 读取日志文件
-    file_log = open('../loggin_conf.json', 'r', encoding='utf-8')
-    ci_array_log = json.load(file_log)
-    # log_init(ci_array_log[0]['logging'])
-    log_init(ci_array_log['logging'])
-
-    logging.info("[main][start...]")
-    archive_handler = ArchiveHandler(
-        ci_array_log["source_path"],
-        ci_array_log["snapshot_subdir"],
-        ci_array_log["dst_path"],
-        ci_array_log["pack_machines"],
-        ci_array_log["filename_suffix"]
-    )
-    try:
-        archive_handler.run()
-    except:
-        logging.error("[main][handle fail][exceptions: %s]" % traceback.format_exc())
-    logging.info("--------------------------------------主程序结束---------------------------------------------]")
+    # file_log = open('../loggin_conf.json', 'r', encoding='utf-8')
+    # ci_array_log = json.load(file_log)
+    # log_init(ci_array_log['logging'])
+    #
+    # logging.info("[main][start...]")
+    # archive_handler = ArchiveHandler(
+    #     ci_array_log["source_path"],
+    #     ci_array_log["snapshot_subdir"],
+    #     ci_array_log["dst_path"],
+    #     ci_array_log["pack_machines"],
+    #     ci_array_log["filename_suffix"]
+    # )
+    # try:
+    #     archive_handler.run()
+    # except:
+    #     logging.error("[main][handle fail][exceptions: %s]" % traceback.format_exc())
+    # logging.info("--------------------------------------主程序结束---------------------------------------------]")
