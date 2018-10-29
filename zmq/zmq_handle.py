@@ -30,7 +30,9 @@ def get_distribute_mac(conf_file):
     yesterday = datetime.datetime.now().date() - datetime.timedelta(days=1)
     yesterday_str = yesterday.strftime('%Y-%m-%d')
     for root, dirs, files in os.walk(conf_file["dst_path"]):
-        sub_dir_array[dirs]=os.path.join(root, dirs, yesterday_str)
+        for name in dirs:
+            # print(os.path.join(root, name))
+            sub_dir_array[name] = os.path.join(root, name, yesterday_str)
 
     return sub_dir_array
 
@@ -52,7 +54,7 @@ def send_macinfo_to_queue(ci_array_log):
 if __name__ == '__main__':
     logging.info('--------------begin application----------------------------')
     # 读取日志文件
-    file_log = open('loggin_conf.json', 'r', encoding='utf-8')
+    file_log = open('../loggin_conf.json', 'r', encoding='utf-8')
     ci_array_log = json.load(file_log)
 
     send_macinfo_to_queue(ci_array_log)
