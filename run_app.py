@@ -18,7 +18,7 @@ import paramiko as pmk
 from rsync.rsync_slave import transition
 import traceback
 
-from log.log import log_init
+from utils.log import log_init
 from archive.archive_handle import execute_handle
 import logging
 '''

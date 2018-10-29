@@ -13,7 +13,7 @@
 import contextlib
 from contextlib import contextmanager
 import time
-from log.log import log_init
+from utils.log import log_init
 from collections import Iterable
 
 import datetime
