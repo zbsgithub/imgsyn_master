@@ -21,6 +21,8 @@ import traceback
 from utils.log import log_init
 from archive.archive_handle import execute_handle
 import logging
+from zmque.zmq_handle import send_macinfo_to_queue
+
 '''
 检查连接
 '''
@@ -78,5 +80,8 @@ if __name__ == '__main__':
 
     file.close()
 
-    execute_handle(ci_array_log)
+    execute_handle(ci_array_log)#文件归档
+
+    send_macinfo_to_queue(ci_array_log)#主从队列通信
+    file_log.close()
     logging.info('---------------end  perform application---------------------')
