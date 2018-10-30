@@ -36,6 +36,7 @@ import utils.iplocation as iplocation
 from mongo.conn_handle import conn
 
 import utils.log as log
+from ip_position.main import get_ip_position
 
 class SnapshotPackDistribution(Document):
     meta = {"collection": "snapshot_pack_distributions"}
@@ -253,7 +254,8 @@ class ArchiveHandler(object):
                 logging.info("[ArchiveHandler::archive][parse line fail][exception: %s][line: %s]" %
                              (traceback.format_exc(), line))
                 continue
-            locale_number = iplocation.get_locale_number(ip_address)
+            # locale_number = iplocation.get_locale_number(ip_address)
+            locale_number = get_ip_position(ip_address)
             pack_machine = self._choose_pack_machine(device_id)
             sub_path = "%s_%s_%s_%s" % (gzid, locale_number, device_id, self._target_day_str)
             meta = [
