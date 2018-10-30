@@ -111,7 +111,7 @@ if __name__ == "__main__":
     import time
     from utils.qqwry import IPInfo
 
-    ipinfo = IPInfo("../app_data/qqwry.dat")
+    ipinfo = IPInfo("../meta/qqwry.dat")
     cache = LruCache(500000)
     ipstrs = []
     for index in range(0, 10000):

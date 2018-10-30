@@ -98,7 +98,7 @@ class IPInfo(object):
 
 def main():
     import random
-    i = IPInfo('qqwry.dat')
+    i = IPInfo('../meta/qqwry.dat')
     count = 0
     while True:
         ipstr = "%s.%s.%s.%s" % (

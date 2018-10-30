@@ -355,6 +355,7 @@ class ArchiveHandler(object):
         partition = self._partitions.get(device_id)#根据did获取对应分区地址(mac)
         if not partition:
             partition_obj = conn("query", {"did": device_id})  # 当前分区对象
+            now_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             if not partition_obj:  # 为空则随机一个并插入数据库
                 # 随机产生mac
                 file_log = open('loggin_conf.json', 'r', encoding='utf-8')
@@ -362,14 +363,14 @@ class ArchiveHandler(object):
 
                 random_partition = random.choice(ci_array_log['pack_machines'])#随机分配一个mac
                 insert_json_obj = {"did": device_id, "mac": random_partition,
-                                   "create_time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                                   "update_time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+                                   "create_time": now_str,
+                                   "update_time": now_str}
                 conn("insert", insert_json_obj)
                 return random_partition
             else:  # 若存在，则直接取mac值
 
                 update_json_obj = {"did": device_id,
-                                   "update_time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                   "update_time": now_str,
                                    "mac": partition_obj["mac"]}
                 conn("update", update_json_obj)
                 self._partitions[device_id] = partition_obj["mac"]

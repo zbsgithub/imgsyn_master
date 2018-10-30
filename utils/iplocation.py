@@ -58,6 +58,7 @@ def get_locale_number(ipstr):
         return number
     """
     address = _ip_info.get_ip_addr(ipstr)
+    print('ip地址：%s' % address)
 
     # print address[0], address[1]
     number = _locale.get_locale_number(address[0])
