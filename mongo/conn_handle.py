@@ -13,7 +13,7 @@ import pymongo
 
 
 def conn(method, json_obj):
-    db_client = pymongo.MongoClient('mongodb://47.93.137.202:27017/')
+    db_client = pymongo.MongoClient('mongodb://47.93.181.56:27017/')
     dblist = db_client.list_database_names()
 
     if "test_mongo" in dblist:  # check dbname(test_mongo) exist

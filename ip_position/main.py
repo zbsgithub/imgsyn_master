@@ -5,8 +5,8 @@ from ip_position.iplocation import init,get_location
 
 ip_cfg = {
     "ip_pos_on": 1,
-    "ip_file": "geoip.dat",
-    "name_file": "names",
+    "ip_file": "/opt/imgsyn_master/ip_position/geoip.dat",
+    "name_file": "/opt/imgsyn_master/ip_position/names",
     "update_hour": 2
 }
 
