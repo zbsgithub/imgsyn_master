@@ -39,6 +39,9 @@ def conn(method, json_obj):
                     return result  # create conllection test_collect
             else:
                 test_collect = db_test_mongo["test_collect"]  # create conllection test_collect
+                test_collect.insert_one({"did": "system_genert_test_did", "mac": "123456",
+                                   "create_time": "2017-04-16 21:01:35",
+                                   "update_time": "2017-04-16 21:01:35"})
     except:
         logging.error(traceback.print_exc())
 
