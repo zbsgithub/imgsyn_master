@@ -11,8 +11,8 @@
   "snapshot_subdir": "snapshots",
   "dst_path": "/data/snapshot_archives/",
   "pack_machines": [
-    "00163E001D8F",
-    "00163E007D64"
+    "00163E0AA006",
+    "00163E0E563C"
   ],
   "filename_suffix": "metainfo.txt"
 }
