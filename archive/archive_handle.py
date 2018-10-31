@@ -349,7 +349,7 @@ class ArchiveHandler(object):
             now_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             if not partition_obj:  # if null the rand insert to database
                 # random born mac
-                file_log = open('/opt/imgsyn_master/loggin_conf.json', 'r', encoding='utf-8')
+                file_log = open('/opt/imgsyn_master/config/loggin_conf.json', 'r', encoding='utf-8')
                 ci_array_log = json.load(file_log)
 
                 random_partition = random.choice(ci_array_log['pack_machines'])#random distribution mac

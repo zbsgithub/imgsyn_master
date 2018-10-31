@@ -17,6 +17,7 @@ import datetime
 import logging
 import os
 import json
+import shutil
 
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
@@ -52,11 +53,17 @@ def send_macinfo_to_queue(ci_array_log):
        socket.send_string("%s:%s" % (mac, mac_array[mac]))
        logging.info("%s:%s" % (mac, mac_array[mac]))
 
+   recursive_delete_tmp()
+
+def recursive_delete_tmp():
+    shutil.rmtree("/tmp/pack_snapshot_v1/")
+    logging.info("recursive delete tmp below pack_snapshot_v1 over")
+
 
 if __name__ == '__main__':
     logging.info('---begin application------')
     # read log config file
-    file_log = open('../loggin_conf.json', 'r', encoding='utf-8')
+    file_log = open('../config/loggin_conf.json', 'r', encoding='utf-8')
     ci_array_log = json.load(file_log)
 
     send_macinfo_to_queue(ci_array_log)
