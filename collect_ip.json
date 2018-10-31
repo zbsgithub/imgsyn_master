@@ -1,14 +1,14 @@
 [
   {
     "mac_name": "slave01",
-    "ip": "10.170.233.165",
+    "ip": "live02",
     "account": "root",
     "pwd": "Gzdatun1161n",
     "port": 22
   },
     {
     "mac_name": "slave02",
-    "ip": "10.44.14.101",
+    "ip": "live01",
     "account": "root",
     "pwd": "Gzdatun1161n",
     "port": 22
