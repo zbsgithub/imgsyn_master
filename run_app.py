@@ -7,16 +7,16 @@
 # @Software: PyCharm
 
 '''
-程序入口
+program entrance
 '''
 
 import json
 import multiprocessing as mp
 from functools import partial
-import time
 import paramiko as pmk
 from rsync.rsync_slave import transition
 import traceback
+import sys
 
 from utils.log import log_init
 from archive.archive_handle import execute_handle
@@ -24,7 +24,7 @@ import logging
 from zmque.zmq_handle import send_macinfo_to_queue
 
 '''
-检查连接
+check conn
 '''
 
 
@@ -39,31 +39,33 @@ def check_ssh(host, user, port, passwd, dest_path):
         logging.info('failed to connect to host: %r: %r' % (host, e))
         return False
     else:
-        logging.debug('连接通了')
+        logging.debug('connect successful')
         return True
 
 
-# 全局路径变量
+# global path variable
 local_base_path = '/data/snapshots/'
 remote_base_path = '/data/snapshots/'
 
 if __name__ == '__main__':
-    logging.info('--------------begin perfom application---------------------- ')
+    logging.info('--------------begin perfom all application-------- ')
 
-    file = open('collect_ip.json', 'r', encoding='utf-8')
+    file = open(sys.argv[1], 'r', encoding='utf-8')
+    # file = open('collect_ip.json', 'r', encoding='utf-8')
     ci_array = json.load(file)
 
-    # 读取日志文件
-    file_log = open('loggin_conf.json', 'r', encoding='utf-8')
+    # read log config file
+    file_log = open(sys.argv[2], 'r', encoding='utf-8')
+    # file_log = open('loggin_conf.json', 'r', encoding='utf-8')
     ci_array_log = json.load(file_log)
     log_init(ci_array_log['logging'])
 
-    pool = mp.Pool(processes=5)  # 进程池
-    p_work = partial(transition, remote_base_path, local_base_path)  # 执行函数及传入相关参数
+    pool = mp.Pool(processes=5)  # process pool
+    p_work = partial(transition, remote_base_path, local_base_path)  # perform rsync file function
 
     for item in ci_array:
         '''
-        多进程执行同步任务
+        Multiple processes perform synchronization tasks
         '''
         try:
 
@@ -72,7 +74,6 @@ if __name__ == '__main__':
                 logging.error('SSH connect faild!')
                 exit(-1)
             pool.map(p_work, (item, ))
-            #time.sleep(10)
         except:
             logging.error("unknow exception: ", traceback.format_exc())
     pool.terminate()
@@ -80,8 +81,9 @@ if __name__ == '__main__':
 
     file.close()
 
-    execute_handle(ci_array_log)#文件归档
+    execute_handle(ci_array_log)# file archive
 
-    send_macinfo_to_queue(ci_array_log)#主从队列通信
+    send_macinfo_to_queue(ci_array_log)#master-slave quene communication
+
     file_log.close()
     logging.info('---------------end  perform application---------------------')

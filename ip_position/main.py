@@ -13,7 +13,7 @@ ip_cfg = {
 init(ip_file=ip_cfg['ip_file'], address_file=ip_cfg["name_file"])
 
 '''
-根据ip返回城市定位信息
+According ip return city gps info
 '''
 def get_ip_position(ip_address):
     ip_loc = get_location(ip_address)

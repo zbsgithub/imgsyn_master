@@ -10,32 +10,21 @@
     图片分类归档处理
 '''
 
-import contextlib
-from contextlib import contextmanager
-import time
-from utils.log import log_init
-from collections import Iterable
-
 import datetime
 import os
 import logging
 import csv
 import shutil
-import sys
 import traceback
 import random
-import zmq
-import time
 import json
 
 from mongoengine import Document, StringField, DateTimeField, IntField
 
 from utils.net import get_mac_address
 from utils.file_group import FileGroup
-import utils.iplocation as iplocation
 from mongo.conn_handle import conn
 
-import utils.log as log
 from ip_position.main import get_ip_position
 
 class SnapshotPackDistribution(Document):
@@ -294,7 +283,7 @@ class ArchiveHandler(object):
 
             # logging.debug("[ArchiveHandler::_compress][machine_id: %s][path_id: %s]" % (machine_id, path_id))
             try:
-                target_path_obj = self._target_paths[machine_id]#mac地址例：00163E001D8F
+                target_path_obj = self._target_paths[machine_id]#mac example：00163E001D8F
             except:
                 logging.error("[ArchiveHandler::_compress][get target path error][machine_id: %s]" % machine_id)
                 raise
@@ -313,11 +302,11 @@ class ArchiveHandler(object):
             list_file_descriptor = None
             try:
                 list_file_descriptor = open(list_file_name, "w")
-                meta_writer = csv.writer(list_file_descriptor, dialect="excel-tab")  # 设定写入模式
+                meta_writer = csv.writer(list_file_descriptor, dialect="excel-tab")  # set write mode
             except:
                 if list_file_descriptor:
                     list_file_descriptor.close()
-                logging.error('写入出错了：%s' % traceback.format_exc())
+                logging.error('writer error ：%s' % traceback.format_exc())
                 continue
 
             count = 1
@@ -326,7 +315,7 @@ class ArchiveHandler(object):
                 try:
                     meta_writer.writerow(meta)
                 except:
-                    logging.error('写入list.csv出错了：%s' % traceback.format_exc())
+                    logging.error('write list.csv file error：%s' % traceback.format_exc())
                     continue
                 count += 1
             list_file_descriptor.close()
@@ -344,7 +333,7 @@ class ArchiveHandler(object):
 
         logging.debug("[ArchiveHandler::_compress][compress_count: %s]" % compress_count)
 
-    def _copyfile(self, src, dst, length=16 * 1024):  # 暂时没用到
+    def _copyfile(self, src, dst, length=16 * 1024):
         with open(src, 'rb') as fsrc:
             with open(dst, 'wb') as fdst:
                 while 1:
@@ -354,22 +343,22 @@ class ArchiveHandler(object):
                     fdst.write(buf)
 
     def _choose_pack_machine(self, device_id):
-        partition = self._partitions.get(device_id)#根据did获取对应分区地址(mac)
+        partition = self._partitions.get(device_id)#according did obtain about partition mac
         if not partition:
-            partition_obj = conn("query", {"did": device_id})  # 当前分区对象
+            partition_obj = conn("query", {"did": device_id})  # curretn partition object
             now_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            if not partition_obj:  # 为空则随机一个并插入数据库
-                # 随机产生mac
+            if not partition_obj:  # if null the rand insert to database
+                # random born mac
                 file_log = open('loggin_conf.json', 'r', encoding='utf-8')
                 ci_array_log = json.load(file_log)
 
-                random_partition = random.choice(ci_array_log['pack_machines'])#随机分配一个mac
+                random_partition = random.choice(ci_array_log['pack_machines'])#random distribution mac
                 insert_json_obj = {"did": device_id, "mac": random_partition,
                                    "create_time": now_str,
                                    "update_time": now_str}
                 conn("insert", insert_json_obj)
                 return random_partition
-            else:  # 若存在，则直接取mac值
+            else:  # if exist so directly take mac value
 
                 update_json_obj = {"did": device_id,
                                    "update_time": now_str,
@@ -395,10 +384,10 @@ class ArchiveHandler(object):
                     files.append(os.path.join(full_path, file_name))
         return files
 '''
-调用执行的方法
+call perform method
 '''
 def execute_handle(ci_array_log):
-    logging.info("--------------------------------------开始调用归档方法---------------------------------------------")
+    logging.info("---begin call archive program -----")
 
     logging.info("[main][start...]")
     archive_handler = ArchiveHandler(
@@ -412,4 +401,4 @@ def execute_handle(ci_array_log):
         archive_handler.run()
     except:
         logging.error("[main][handle fail][exceptions: %s]" % traceback.format_exc())
-    logging.info("--------------------------------------归档程序执行完成---------------------------------------------]")
+    logging.info("---end call archive program -----")
