@@ -343,30 +343,35 @@ class ArchiveHandler(object):
                     fdst.write(buf)
 
     def _choose_pack_machine(self, device_id):
-        partition = self._partitions.get(device_id)#according did obtain about partition mac
-        if not partition:
-            partition_obj = conn("query", {"did": device_id})  # curretn partition object
-            now_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            if not partition_obj:  # if null the rand insert to database
-                # random born mac
-                file_log = open('/opt/imgsyn_master/config/loggin_conf.json', 'r', encoding='utf-8')
-                ci_array_log = json.load(file_log)
+        try:
+            partition = self._partitions.get(device_id)  # according did obtain about partition mac
+            if not partition:
+                partition_obj = conn("query", {"did": device_id})  # curretn partition object
+                now_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                if not partition_obj:  # if null the rand insert to database
+                    # random born mac
+                    file_log = open('/opt/imgsyn_master/config/loggin_conf.json', 'r', encoding='utf-8')
+                    ci_array_log = json.load(file_log)
 
-                random_partition = random.choice(ci_array_log['pack_machines'])#random distribution mac
-                insert_json_obj = {"did": device_id, "mac": random_partition,
-                                   "create_time": now_str,
-                                   "update_time": now_str}
-                conn("insert", insert_json_obj)
-                return random_partition
-            else:  # if exist so directly take mac value
+                    random_partition = random.choice(ci_array_log['pack_machines'])  # random distribution mac
+                    insert_json_obj = {"did": device_id, "mac": random_partition,
+                                       "create_time": now_str,
+                                       "update_time": now_str}
+                    conn("insert", insert_json_obj)
+                    return random_partition
+                else:  # if exist so directly take mac value
 
-                update_json_obj = {"did": device_id,
-                                   "update_time": now_str,
-                                   "mac": partition_obj["mac"]}
-                conn("update", update_json_obj)
-                self._partitions[device_id] = partition_obj["mac"]
-                return partition_obj["mac"]
-        return partition
+                    update_json_obj = {"did": device_id,
+                                       "update_time": now_str,
+                                       "mac": partition_obj["mac"]}
+                    conn("update", update_json_obj)
+                    self._partitions[device_id] = partition_obj["mac"]
+                    return partition_obj["mac"]
+            return partition
+        except:
+            logging.error(traceback.print_exc())
+
+
 
     def _close_all(self):
         for key, value in self._archives.iteritems():
