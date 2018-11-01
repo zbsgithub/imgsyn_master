@@ -1,16 +1,317 @@
 [
-  {
-    "mac_name": "slave01",
-    "ip": "live01",
-    "account": "root",
-    "pwd": "Gzdatun1161n",
-    "port": 22
-  },
-    {
-    "mac_name": "slave02",
-    "ip": "live02",
-    "account": "root",
-    "pwd": "Gzdatun1161n",
-    "port": 22
-  }
+ {
+		"mac_name": "slave01",
+		"ip": "live01",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave02",
+		"ip": "live02",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave03",
+		"ip": "live03",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave04",
+		"ip": "live04",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave05",
+		"ip": "live05",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave06",
+		"ip": "live06",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave07",
+		"ip": "live07",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave08",
+		"ip": "live08",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave09",
+		"ip": "live09",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave10",
+		"ip": "live10",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave11",
+		"ip": "live11",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave12",
+		"ip": "live12",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave13",
+		"ip": "live13",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave14",
+		"ip": "live14",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave15",
+		"ip": "live15",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave16",
+		"ip": "live16",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave17",
+		"ip": "live17",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave18",
+		"ip": "live18",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave19",
+		"ip": "live19",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave20",
+		"ip": "live20",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave21",
+		"ip": "live21",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave22",
+		"ip": "live22",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave23",
+		"ip": "live23",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave24",
+		"ip": "live24",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave25",
+		"ip": "live25",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave26",
+		"ip": "live26",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave27",
+		"ip": "live27",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave28",
+		"ip": "live28",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave29",
+		"ip": "live29",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave30",
+		"ip": "live30",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave31",
+		"ip": "live31",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave32",
+		"ip": "live32",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave33",
+		"ip": "live33",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave34",
+		"ip": "live34",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave35",
+		"ip": "live35",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave36",
+		"ip": "live36",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave37",
+		"ip": "live37",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave38",
+		"ip": "live38",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave39",
+		"ip": "live39",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave40",
+		"ip": "live40",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave41",
+		"ip": "live41",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave42",
+		"ip": "live42",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave43",
+		"ip": "live43",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave44",
+		"ip": "live44",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	},
+	{
+		"mac_name": "slave45",
+		"ip": "live45",
+		"account": "root",
+		"pwd": "Gzdatun1161n",
+		"port": 22
+	}
 ]

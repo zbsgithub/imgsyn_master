@@ -107,7 +107,6 @@ class ArchiveHandler(object):
         self._target_paths = {}
         self._metainfo_files = []
         self._tmp_path = "/tmp/pack_snapshot_v1/"
-        self._handled_count = 0
 
     def run(self):
         self.init()
@@ -228,9 +227,6 @@ class ArchiveHandler(object):
             # print(line)
             line = str(line, encoding="utf-8")
             line = line.strip()
-            self._handled_count += 1
-            if self._handled_count % 5000 == 0:
-                logging.debug("[ArchiveHandler::archive][handled_count: %s]" % self._handled_count)
             try:
                 width, height, timestamp, device_model, device_id, \
                 ip_address, gzid, oem_name, device_num, device_name, fid, category, \
@@ -246,6 +242,8 @@ class ArchiveHandler(object):
             # locale_number = iplocation.get_locale_number(ip_address)
             locale_number = get_ip_position(ip_address)
             pack_machine = self._choose_pack_machine(device_id)
+            if pack_machine == None:
+                continue
             sub_path = "%s_%s_%s_%s" % (gzid, locale_number, device_id, self._target_day_str)
             meta = [
                 uid,
@@ -266,7 +264,6 @@ class ArchiveHandler(object):
             snapshot_file = SnapshotFile(snapshot_abs_filename, meta)
             self._archive_table.add(pack_machine, sub_path, snapshot_file)
         fd.close()
-        logging.debug("[ArchiveHandler::_archive][handled_count: %s]" % self._handled_count)
         logging.debug("[ArchiveHandler::_archive][over...]")
 
     def _compress(self):
@@ -350,15 +347,16 @@ class ArchiveHandler(object):
                 now_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 if not partition_obj:  # if null the rand insert to database
                     # random born mac
-                    file_log = open('/opt/imgsyn_master/config/loggin_conf.json', 'r', encoding='utf-8')
-                    ci_array_log = json.load(file_log)
-
-                    random_partition = random.choice(ci_array_log['pack_machines'])  # random distribution mac
-                    insert_json_obj = {"did": device_id, "mac": random_partition,
-                                       "create_time": now_str,
-                                       "update_time": now_str}
-                    conn("insert", insert_json_obj)
-                    return random_partition
+                    # file_log = open('/opt/imgsyn_master/config/loggin_conf.json', 'r', encoding='utf-8')
+                    # ci_array_log = json.load(file_log)
+                    #
+                    # random_partition = random.choice(ci_array_log['pack_machines'])  # random distribution mac
+                    # insert_json_obj = {"did": device_id, "mac": random_partition,
+                    #                    "create_time": now_str,
+                    #                    "update_time": now_str}
+                    # conn("insert", insert_json_obj)
+                    # return random_partition
+                    return None
                 else:  # if exist so directly take mac value
 
                     update_json_obj = {"did": device_id,

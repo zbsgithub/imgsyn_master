@@ -17,7 +17,6 @@ import datetime
 import logging
 import os
 import json
-import shutil
 
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
@@ -52,12 +51,6 @@ def send_macinfo_to_queue(ci_array_log):
 
        socket.send_string("%s:%s" % (mac, mac_array[mac]))
        logging.info("%s:%s" % (mac, mac_array[mac]))
-
-   recursive_delete_tmp()
-
-def recursive_delete_tmp():
-    shutil.rmtree("/tmp/pack_snapshot_v1/")
-    logging.info("recursive delete tmp below pack_snapshot_v1 over")
 
 
 if __name__ == '__main__':

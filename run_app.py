@@ -22,6 +22,7 @@ from utils.log import log_init
 from archive.archive_handle import execute_handle
 import logging
 from zmque.zmq_handle import send_macinfo_to_queue
+from zmque.clear_task import clear_jobs
 
 '''
 check conn
@@ -84,6 +85,8 @@ if __name__ == '__main__':
     execute_handle(ci_array_log)# file archive
 
     send_macinfo_to_queue(ci_array_log)#master-slave quene communication
+
+    clear_jobs(ci_array_log) # clear log only three days data
 
     file_log.close()
     logging.info('---------------end  perform application---------------------')
