@@ -68,8 +68,7 @@ class FileGroup(object):
         return self._last_read_path
 
     def _get_oldest_line(self):
-        self._file_objects.sort(
-            key=cmp_to_key(lambda x, y: lt(x["line"][self._datetime_pos], y["line"][self._datetime_pos])))
+        self._file_objects.sort(key=lambda x: x["line"][self._datetime_pos])
         self._last_read_path = self._file_objects[0]["filepath"]
         return self._file_objects[0]["line"]
 
