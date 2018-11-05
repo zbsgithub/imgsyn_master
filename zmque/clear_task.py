@@ -38,7 +38,7 @@ Only for nearly three days
 def clear_rsync_snapshot_archives(ci_array_log):
     local_base_path = ci_array_log["dst_path"]
     near_three_days = []  # near three days array
-    for x in range(3):
+    for x in range(2):
         current_day = (datetime.datetime.now() - datetime.timedelta(days=x + 1)).strftime('%Y-%m-%d')
         near_three_days.append(current_day)
     two_date_array = []  # second dirs arrays
@@ -52,7 +52,7 @@ def clear_rsync_snapshot_archives(ci_array_log):
         if sub_day in near_three_days:
             pass
         else:
-            # shutil.rmtree(os.path.join(item+os.sep))# recursion delete near three day beside dirs
+            shutil.rmtree(os.path.join(item+os.sep))# recursion delete near three day beside dirs
             logging.info('three day beside dirs : %s ' % item)
 
 '''
@@ -62,7 +62,7 @@ Only for nearly three days
 def clear_rsync_snapshot(ci_array_log):
     local_base_path = ci_array_log["source_path"]
     near_three_days = []  # near three days array
-    for x in range(3):
+    for x in range(2):
         current_day = (datetime.datetime.now() - datetime.timedelta(days=x + 1)).strftime('%Y-%m-%d')
         near_three_days.append(current_day)
 
@@ -77,7 +77,7 @@ def clear_rsync_snapshot(ci_array_log):
         if sub_day in near_three_days:
             pass
         else:
-            # shutil.rmtree(os.path.join(item+os.sep))# recursion delete near three day beside dirs
+            shutil.rmtree(os.path.join(item+os.sep))# recursion delete near three day beside dirs
             logging.info('three day beside dirs : %s ' % item)
 
 
