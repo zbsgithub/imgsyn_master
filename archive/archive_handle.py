@@ -347,16 +347,16 @@ class ArchiveHandler(object):
                 now_str = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 if not partition_obj:  # if null the rand insert to database
                     # random born mac
-                    # file_log = open('/opt/imgsyn_master/config/loggin_conf.json', 'r', encoding='utf-8')
-                    # ci_array_log = json.load(file_log)
-                    #
-                    # random_partition = random.choice(ci_array_log['pack_machines'])  # random distribution mac
-                    # insert_json_obj = {"did": device_id, "mac": random_partition,
-                    #                    "create_time": now_str,
-                    #                    "update_time": now_str}
-                    # conn("insert", insert_json_obj)
-                    # return random_partition
-                    return None
+                    file_log = open('/opt/imgsyn_master/config/loggin_conf.json', 'r', encoding='utf-8')
+                    ci_array_log = json.load(file_log)
+
+                    random_partition = random.choice(ci_array_log['pack_machines'])  # random distribution mac
+                    insert_json_obj = {"did": device_id, "mac": random_partition,
+                                       "create_time": now_str,
+                                       "update_time": now_str}
+                    conn("insert", insert_json_obj)
+                    return random_partition
+                    # return None
                 else:  # if exist so directly take mac value
 
                     update_json_obj = {"did": device_id,
