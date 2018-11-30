@@ -83,9 +83,12 @@ class FileGroup(object):
 
                 line = line.strip()
                 line = line.split(self._separator)
-                line[self._datetime_pos] = datetime.datetime.strptime(line[self._datetime_pos], self._datetime_format)
-                #logging.info("[FileGroup::_get_record][return line: %s]" % line) 暂时注释掉
-                return line
+                if len(line) != 15:
+                    logging.warning(line)
+                else:
+                    line[self._datetime_pos] = datetime.datetime.strptime(line[self._datetime_pos], self._datetime_format)
+                    #logging.info("[FileGroup::_get_record][return line: %s]" % line) 暂时注释掉
+                    return line
             except:
                 logging.info("[FileGroup::_get_record][exception: %s]" % traceback.format_exc())
                 continue
