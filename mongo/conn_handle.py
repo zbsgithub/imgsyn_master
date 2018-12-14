@@ -37,6 +37,9 @@ def conn(method, json_obj):
                 elif method == "query":
                     result = test_collect.find_one(json_obj)  # find one data
                     return result  # create conllection test_collect
+                elif method == "queryAll":
+                    result = test_collect.find(json_obj) #find all data
+                    return result
             else:
                 test_collect = db_test_mongo["test_collect"]  # create conllection test_collect
                 test_collect.insert_one({"did": "system_genert_test_did", "mac": "123456",
@@ -46,5 +49,11 @@ def conn(method, json_obj):
         logging.error(traceback.print_exc())
 
 if __name__ == '__main__':
-    obj = conn("query", {"did": "60427f60d19f"})
+    # obj = conn("query", {"did": "bcec23de6f69"})
 
+    obj = conn("queryAll", {"mac": "00163E0AA006"})
+
+    # print(obj.__sizeof__())
+    print(obj.count())
+    # for i in obj:
+    #     print(i)

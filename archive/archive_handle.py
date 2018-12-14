@@ -350,11 +350,25 @@ class ArchiveHandler(object):
                     file_log = open('/opt/imgsyn_master/config/loggin_conf.json', 'r', encoding='utf-8')
                     ci_array_log = json.load(file_log)
 
-                    random_partition = random.choice(ci_array_log['pack_machines'])  # random distribution mac
-                    insert_json_obj = {"did": device_id, "mac": random_partition,
-                                       "create_time": now_str,
-                                       "update_time": now_str}
-                    conn("insert", insert_json_obj)
+                    random_partition = 0 #随机选出的一个mac
+                    slave_arrays = ci_array_log['pack_machines']
+                    temp_dict = {}
+                    for item in slave_arrays:
+                        obj = conn("queryAll", {"mac": item})
+                        temp_dict[item] = obj.count()
+
+                    temp__center_dict = sorted(temp_dict.items(), key=lambda d: d[1])
+                    for k, v in temp__center_dict.__iter__():
+                        # print(k, v)
+                        # random_partition = random.choice(ci_array_log['pack_machines'])  # random distribution mac
+                        random_partition = k  # random distribution mac
+                        insert_json_obj = {"did": device_id, "mac": k,
+                                           "create_time": now_str,
+                                           "update_time": now_str}
+                        conn("insert", insert_json_obj)
+                        break
+
+
                     return random_partition
                     # return None
                 else:  # if exist so directly take mac value
